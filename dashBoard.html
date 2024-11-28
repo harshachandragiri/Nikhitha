@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Dashboard</h1>
+    <div class="navbar" style="display: flex; justify-content: space-around; width: 60vw; margin: auto;">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="cart.html">View Cart</a>
+    </div>
+    <br>
+    <div id="products" class="products-flexbox"></div>
+  </div>
+  <script>
+    const products = [
+      { id: 1, name: "Iphone 15 - Black", image: "https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/h/d/9/-original-imagtc2qzgnnuhxh.jpeg?q=70", price: 56000 },
+      { id: 2, name: "Iphone 15 - Green", image: "https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/j/z/3/-original-imagtc5fqyz8tu4c.jpeg?q=70", price: 58000 },
+      { id: 3, name: "Iphone 15 - Pink", image: "https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/a/c/k/-original-imagtc5fuzkvczr7.jpeg?q=70", price: 61000 },
+      { id: 4, name: "Iphone 15 Pro - Black", image: "https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/z/4/r/-original-imagtc4g22rcatjg.jpeg?q=70", price: 61000 },
+      
+    ];
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Check login status
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      alert("Please log in first!");
+      window.location.href = "login.html";
+    }
+
+    // Render products using flexbox
+    const productsDiv = document.getElementById("products");
+    products.forEach((product) => {
+      const productDiv = document.createElement("div");
+      productDiv.classList.add("card");
+      productDiv.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" class="product-image"> 
+        <h2>${product.name}</h2>
+        <p>Price: ₹${product.price}</p>
+        <button onclick="addToCart(${product.id})">Add to Cart</button>
+      `;
+      productsDiv.appendChild(productDiv);
+    });
+
+    function addToCart(productId) {
+      const product = products.find((p) => p.id === productId);
+      cart.push(product);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(`${product.name} added to cart!`);
+    }
+  </script>
+</body>
+</html>
